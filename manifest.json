@@ -1,0 +1,9 @@
+{
+  "domain": "broan",
+  "name": "Fan",
+  "documentation": "",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@angelyangw"],
+  "version": "2.0.0"
+}
