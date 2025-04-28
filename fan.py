@@ -43,7 +43,7 @@ def setup_platform(hass: HomeAssistant, config: ConfigType, add_entities,
 
 
 class BroanFan(FanEntity):
-    _attr_supported_features = FanEntityFeature.SET_SPEED | FanEntityFeature.PRESET_MODE
+    _attr_supported_features = FanEntityFeature.SET_SPEED | FanEntityFeature.PRESET_MODE | FanEntityFeature.TURN_ON | FanEntityFeature.TURN_OFF
 
     def __init__(self, hass, config):
         self._hass = hass
@@ -58,6 +58,13 @@ class BroanFan(FanEntity):
         self._status = None
         self._percentage = 0
         self.fan_client = hass.data[DOMAIN]
+        self._host = config.get('host') # Store host for unique_id
+        self._address = config.get('address') # Store address for unique_id
+
+    @property
+    def unique_id(self):
+        """Return a unique ID."""
+        return f"broan_{self._host}_{self._address}"
 
     @property
     def name(self):
