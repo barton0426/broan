@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import socket
 from typing import Optional, Any
-
+from propcache.api import cached_property
 from homeassistant.components.fan import (
     ATTR_PERCENTAGE,
     ATTR_PRESET_MODE,
@@ -43,7 +43,14 @@ def setup_platform(hass: HomeAssistant, config: ConfigType, add_entities,
 
 
 class BroanFan(FanEntity):
-    _attr_supported_features = FanEntityFeature.SET_SPEED | FanEntityFeature.PRESET_MODE
+    @property
+    def supported_features(self):
+        """Flag supported features."""
+        return (
+            FanEntityFeature.TURN_ON | FanEntityFeature.TURN_OFF | FanEntityFeature.SET_SPEED | FanEntityFeature.PRESET_MODE
+            if self.speed_count > 1
+            else FanEntityFeature.TURN_ON | FanEntityFeature.TURN_OFF | FanEntityFeature.SET_SPEED
+        )
 
     def __init__(self, hass, config):
         self._hass = hass
